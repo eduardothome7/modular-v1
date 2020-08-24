@@ -1,0 +1,55 @@
+<%= form_with(model: table, local: true, id: 'form_table') do |form| %>
+  
+  <% if table.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(table.errors.count, "error") %> prohibited this table from being saved:</h2>
+
+      <ul>
+        <% table.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label "Nome" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label "Colunas da Tabela" %>
+    <a href="#!" class="add-field">Add campo</a>
+    <table class="table" id="fields" width="100%">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Nome</th>
+          <th>Tipo de Campo</th>
+          <th>Nulo?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @table.columns.each do  |column| %>
+          <tr class="trField">
+            <td class="tdTitle"><input type="text" name="fieldTitle" value="<%= column["title"] %>" required></td>
+            <td class="tdName"><input type="text" name="fieldName" value="<%= column["name"] %>" required></td>
+            <td class="tdType">
+              <select name="fieldType">
+                <% types.each do |type| %>  
+                  <option <%= selected(type, column["type"]) %> value="<%= type %>"><%= type %></option>
+                <% end %>
+              </select>
+            </td>
+            <td class="tdNullable"><input type="checkbox" <%= checked?(column["notnull"]) %> name="fieldNull"></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= form.hidden_field :fields %>
+  </div>
+
+  <div class="actions">
+      <%= form.submit %>
+  </div>
+<% end %>

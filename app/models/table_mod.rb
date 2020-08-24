@@ -1,0 +1,2 @@
+class TableMod < ApplicationRecord
+end
